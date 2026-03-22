@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Award } from 'lucide-react'
+import { Award, ExternalLink, Clock } from 'lucide-react'
 import SectionWrapper from '../ui/SectionWrapper'
 import SectionTitle from '../ui/SectionTitle'
 import { certifications } from '../../data'
@@ -28,7 +28,7 @@ export default function Certifications() {
                 border: `1px solid ${cert.color}20`,
               }}
             >
-              {/* Glass shine effect */}
+              {/* Glass shine on hover */}
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{
@@ -36,7 +36,7 @@ export default function Certifications() {
                 }}
               />
 
-              {/* Top bar */}
+              {/* Top accent bar */}
               <div
                 className="absolute top-0 left-0 right-0 h-0.5"
                 style={{ background: `linear-gradient(90deg, transparent, ${cert.color}, transparent)` }}
@@ -50,18 +50,54 @@ export default function Certifications() {
                 {cert.icon}
               </div>
 
-              {/* Content */}
-              <h3 className="font-display font-bold text-white text-lg mb-1 group-hover:text-white transition-colors">
+              {/* Title */}
+              <h3 className="font-display font-bold text-white text-lg mb-1">
                 {cert.title}
               </h3>
-              <p className="font-mono text-xs mb-3" style={{ color: cert.color }}>
-                {cert.issuer}
-              </p>
-              <p className="font-body text-white/40 text-xs leading-relaxed">
+
+              {/* Issuer + year row */}
+              <div className="flex items-center justify-between mb-3">
+                <p className="font-mono text-xs" style={{ color: cert.color }}>
+                  {cert.issuer}
+                </p>
+                {cert.year === 'In Progress' ? (
+                  <span
+                    className="flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-full border"
+                    style={{
+                      borderColor: `${cert.color}40`,
+                      color: cert.color,
+                      background: `${cert.color}10`,
+                    }}
+                  >
+                    <Clock size={10} />
+                    In Progress
+                  </span>
+                ) : (
+                  <span className="font-mono text-[10px] text-white/30">{cert.year}</span>
+                )}
+              </div>
+
+              {/* Description */}
+              <p className="font-body text-white/40 text-xs leading-relaxed mb-4">
                 {cert.description}
               </p>
 
-              {/* Award icon */}
+              {/* Verify Credential — only rendered when url is non-null */}
+              {cert.url && (
+                
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-mono text-[11px] transition-colors duration-200 hover:underline"
+                  style={{ color: cert.color }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <ExternalLink size={11} />
+                  Verify Credential
+                </a>
+              )}
+
+              {/* Decorative award icon */}
               <div className="absolute bottom-4 right-4 text-white/10 group-hover:text-white/20 transition-colors">
                 <Award size={20} />
               </div>
